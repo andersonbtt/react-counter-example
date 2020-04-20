@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../counter/CounterButton.css';
-import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch , Link} from 'react-router-dom';
 
 class TodoApp extends Component{
 
@@ -26,7 +26,12 @@ class TodoApp extends Component{
 
 class WelcomeComponent extends Component{
     render(){
-    return <div>Welcome {this.props.match.params.name}</div>
+    return (
+            <div>
+                Welcome {this.props.match.params.name}. 
+                You can manage your todos <Link to="/todos">here</Link>.
+            </div>
+        )
     }
 }
 
@@ -58,13 +63,15 @@ class ListTodosComponent extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.todos.map (
-                            todo =>
-                                <tr>
-                                    <td>{todo.id}</td>
-                                    <td>{todo.description}</td>
-                                </tr>
-                        )}
+                        {
+                            this.state.todos.map (
+                                todo =>
+                                    <tr key={todo.id}>
+                                        <td>{todo.id}</td>
+                                        <td>{todo.description}</td>
+                                    </tr>
+                            )
+                        }
                     </tbody>
                 </table>
             </div>
