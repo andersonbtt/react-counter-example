@@ -9,8 +9,8 @@ class LoginComponent extends Component{
         super(props)
 
         this.state = {
-            username: 'anderson',
-            password: '',
+            username: 'user',
+            password: 'password',
             hasLoginFailed: false,
             hasLoginSucceeded: false
         }
@@ -28,20 +28,21 @@ class LoginComponent extends Component{
 
     loginClicked(){
 
-        if(this.state.username==='anderson' && this.state.password==='password'){
-            AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password)
-            this.props.history.push(`/welcome/${this.state.username}`)
-        } else {
-            console.log('failure')
-            this.setState((prevState)=>{
-                return {
-                    hasLoginFailed: true,
-                    hasLoginSucceeded: false
-                }
+        AuthenticationService
+            .executeBasicAuthenticationService(this.state.username, this.state.password)
+            .then( ()  => {
+                AuthenticationService.registerSuccessfulLogin(this.state.username, this.state.password)
+                this.props.history.push(`/welcome/${this.state.username}`)
             })
-            this.props.history.push("/login")
-        }
-        console.log(this.state)
+            .catch( () => {
+                this.setState((prevState)=>{
+                    return {
+                        hasLoginFailed: true,
+                        hasLoginSucceeded: false
+                    }
+                })
+                this.props.history.push("/login")
+            })
     }
 
     render(){
